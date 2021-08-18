@@ -64,108 +64,8 @@
                         <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-email-outline"></i>
-                        <span class="count-symbol bg-warning"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-                        <h6 class="p-3 mb-0">Messages</h6>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <img src="{{asset('images/faces/face4.jpg')}}" alt="image" class="profile-pic">
-                            </div>
-                            <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Mark send you a message</h6>
-                                <p class="text-gray mb-0"> 1 Minutes ago </p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <img src="{{asset('images/faces/face2.jpg')}}" alt="image" class="profile-pic">
-                            </div>
-                            <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Cregh send you a message</h6>
-                                <p class="text-gray mb-0"> 15 Minutes ago </p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <img src="{{asset('images/faces/face3.jpg')}}" alt="image" class="profile-pic">
-                            </div>
-                            <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Profile picture updated</h6>
-                                <p class="text-gray mb-0"> 18 Minutes ago </p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <h6 class="p-3 mb-0 text-center">4 new messages</h6>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-                        <i class="mdi mdi-bell-outline"></i>
-                        <span class="count-symbol bg-danger"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                        <h6 class="p-3 mb-0">Notifications</h6>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-success">
-                                    <i class="mdi mdi-calendar"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                <h6 class="preview-subject font-weight-normal mb-1">Event today</h6>
-                                <p class="text-gray ellipsis mb-0"> Just a reminder that you have an event today </p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-warning">
-                                    <i class="mdi mdi-settings"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                <h6 class="preview-subject font-weight-normal mb-1">Settings</h6>
-                                <p class="text-gray ellipsis mb-0"> Update dashboard </p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-info">
-                                    <i class="mdi mdi-link-variant"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                                <h6 class="preview-subject font-weight-normal mb-1">Launch Admin</h6>
-                                <p class="text-gray ellipsis mb-0"> New admin wow! </p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <h6 class="p-3 mb-0 text-center">See all notifications</h6>
-                    </div>
-                </li>
-                <li class="nav-item nav-logout d-none d-lg-block">
-                    <a class="nav-link" href="#">
-                        <i class="mdi mdi-power"></i>
-                    </a>
-                </li>
-                <li class="nav-item nav-settings d-none d-lg-block">
-                    <a class="nav-link" href="#">
-                        <i class="mdi mdi-format-line-spacing"></i>
-                    </a>
-                </li>
             </ul>
-            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                <span class="mdi mdi-menu"></span>
-            </button>
+
         </div>
     </nav>
     <!-- partial -->
@@ -194,80 +94,94 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                        <span class="menu-title">Basic UI Elements</span>
+                    <a class="nav-link" data-toggle="collapse" href="#school_college_university" aria-expanded="false" aria-controls="ui-basic">
+                        <span class="menu-title">School / College / University</span>
                         <i class="menu-arrow"></i>
-                        <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+{{--                        <i class="mdi mdi-crosshairs-gps menu-icon"></i>--}}
                     </a>
-                    <div class="collapse" id="ui-basic">
+                    <div class="collapse" id="school_college_university">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">Buttons</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Typography</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">List of School</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Add School</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">List of College</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Add College</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">List of University</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Add University</a></li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="menu-title">Icons</span>
-                        <i class="mdi mdi-contacts menu-icon"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="menu-title">Forms</span>
-                        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="menu-title">Charts</span>
-                        <i class="mdi mdi-chart-bar menu-icon"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="menu-title">Tables</span>
-                        <i class="mdi mdi-table-large menu-icon"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
-                        <span class="menu-title">Sample Pages</span>
+                    <a class="nav-link" data-toggle="collapse" href="#student" aria-expanded="false" aria-controls="general-pages">
+                        <span class="menu-title">Student</span>
                         <i class="menu-arrow"></i>
-                        <i class="mdi mdi-medical-bag menu-icon"></i>
+{{--                        <i class="mdi mdi-medical-bag menu-icon"></i>--}}
                     </a>
-                    <div class="collapse" id="general-pages">
+                    <div class="collapse" id="student">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#"> Blank Page </a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#"> Login </a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#"> Register </a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#"> 404 </a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#"> 500 </a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">List of Student</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Add Student</a></li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item sidebar-actions">
-              <span class="nav-link">
-                <div class="border-bottom">
-                  <h6 class="font-weight-normal mb-3">Projects</h6>
-                </div>
-                <button class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add a project</button>
-                <div class="mt-4">
-                  <div class="border-bottom">
-                    <p class="text-secondary">Categories</p>
-                  </div>
-                  <ul class="gradient-bullet-list mt-4">
-                    <li>Free</li>
-                    <li>Pro</li>
-                  </ul>
-                </div>
-              </span>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#certificate" aria-expanded="false" aria-controls="general-pages">
+                        <span class="menu-title">Certificate</span>
+                        <i class="menu-arrow"></i>
+                        {{--                        <i class="mdi mdi-medical-bag menu-icon"></i>--}}
+                    </a>
+                    <div class="collapse" id="certificate">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" href="#">Claim Certificate</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#student" aria-expanded="false" aria-controls="general-pages">
+                        <span class="menu-title">Student</span>
+                        <i class="menu-arrow"></i>
+                        {{--                        <i class="mdi mdi-medical-bag menu-icon"></i>--}}
+                    </a>
+                    <div class="collapse" id="student">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" href="#">Student Enrollment Form</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Student List</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#certificate" aria-expanded="false" aria-controls="general-pages">
+                        <span class="menu-title">Certificate</span>
+                        <i class="menu-arrow"></i>
+                        {{--                        <i class="mdi mdi-medical-bag menu-icon"></i>--}}
+                    </a>
+                    <div class="collapse" id="certificate">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" href="#">Generate Certificate</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#">Certificate List</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse"  aria-expanded="false" aria-controls="general-pages">
+                        <span class="menu-title">Profile</span>
+{{--                        <i class="menu-arrow"></i>--}}
+                        {{--                        <i class="mdi mdi-medical-bag menu-icon"></i>--}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse"  aria-expanded="false" aria-controls="general-pages">
+                        <span class="menu-title">Help and Support</span>
+                        {{--                        <i class="menu-arrow"></i>--}}
+                        {{--                        <i class="mdi mdi-medical-bag menu-icon"></i>--}}
+                    </a>
                 </li>
             </ul>
         </nav>
         <!-- /top navigation -->
         <div class="right_col" role="main">
+{{--            <div class="main-panel">--}}
             @yield('content')
+{{--            </div>--}}
         </div>
 
     </div>
