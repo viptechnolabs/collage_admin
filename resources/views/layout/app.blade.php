@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Purple Admin</title>
+    <title>College Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href=" {{asset('vendors/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('vendors/css/vendor.bundle.base.css')}}">
@@ -88,7 +88,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ route('index') }}">
                         <span class="menu-title">Dashboard</span>
                         <i class="mdi mdi-home menu-icon"></i>
                     </a>
@@ -101,12 +101,12 @@
                     </a>
                     <div class="collapse" id="school_college_university">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">List of School</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Add School</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">List of College</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Add College</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">List of University</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Add University</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('school') }}">List of School</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_school') }}">Add School</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('college') }}">List of College</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{route('add_college')}}">Add College</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('university') }}">List of University</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_university') }}">Add University</a></li>
                         </ul>
                     </div>
                 </li>
@@ -178,11 +178,13 @@
             </ul>
         </nav>
         <!-- /top navigation -->
-        <div class="right_col" role="main">
+{{--        <div class="right_col" role="main">--}}
 {{--            <div class="main-panel">--}}
+        <div class="main-panel">
             @yield('content')
-{{--            </div>--}}
         </div>
+{{--            </div>--}}
+{{--        </div>--}}
 
     </div>
     <!-- page-body-wrapper ends -->
@@ -203,5 +205,13 @@
 <script src="{{asset('js/dashboard.js')}}"></script>
 <script src="{{asset('js/todolist.js')}}"></script>
 <!-- End custom js for this page -->
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 </body>
 </html>
