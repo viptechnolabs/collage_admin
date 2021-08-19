@@ -6,6 +6,8 @@ use App\DataTables\SchoolDataTable;
 use App\Models\College;
 use App\Models\School;
 use App\Models\University;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +15,97 @@ use Illuminate\Support\Facades\Validator;
 class IndexConroller extends Controller
 {
     //
+    public function addUniversity()
+    {
+        return view('add_university');
+    }
+
+    public function University()
+    {
+        $universities = University::all();
+        return view('university', ['universities' => $universities]);
+    }
+
+    public function SubmitUniversity(Request $request)
+    {
+        $rules = array(
+            'university_name' => 'required',
+            'university_code' => 'required|max:10|min:3',
+            'university_contact' => 'required|max:13|min:7',
+            'university_email' => 'required|max:50|min:7',
+            'university_address' => 'required',
+        );
+        $validation = Validator::make($request->all(), $rules);
+        if ($validation->fails()) {
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else{
+
+            $user = new User();
+            $user->user_type  ="university";
+            $user->email = $request->university_email;
+            $user->password = Hash::make('password');
+            $user->save();
+
+            $university = new University();
+            $university->user_id  = $user->id;
+            $university->name = $request->university_name;
+            $university->code = $request->university_code;
+            $university->contact_no = $request->university_contact;
+            $university->address = $request->university_address;
+            $university->save();
+            session()->flash('message', 'University Add Successfully..!');
+            return redirect()->route('university');
+
+        }
+    }
+
+    public function addCollege()
+    {
+        return view('add_college');
+    }
+
+    public function College(SchoolDataTable $dataTable)
+    {
+        $colleges = College::all();
+        return $dataTable->render('college', ['colleges' => $colleges]);
+    }
+
+    public function SubmitCollege(Request $request)
+    {
+        $rules = array(
+            'college_name' => 'required',
+            'college_code' => 'required|max:10|min:3',
+            'college_contact' => 'required|max:13|min:7',
+            'college_email' => 'required|max:50|min:7',
+            'college_address' => 'required',
+        );
+        $validation = Validator::make($request->all(), $rules);
+        if ($validation->fails()) {
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else{
+
+            $user = new User();
+            $user->user_type  ="college";
+            $user->email = $request->college_email;
+            $user->password = Hash::make('password');
+            $user->save();
+
+
+            $college = new College();
+            $college->name = $request->college_name;
+            $college->code = $request->college_code;
+            $college->contact_no = $request->college_contact;
+            $college->address = $request->college_address;
+            $college->save();
+            session()->flash('message', 'College Add Successfully..!');
+            return redirect()->back();
+
+        }
+    }
+
+
     public function index()
     {
         return view('index');
@@ -58,81 +151,6 @@ class IndexConroller extends Controller
         //return view('school');
     }
 
-    public function addCollege()
-    {
-        return view('add_college');
-    }
 
-    public function College(SchoolDataTable $dataTable)
-    {
-        $colleges = College::all();
-        return $dataTable->render('college', ['colleges' => $colleges]);
-    }
 
-    public function SubmitCollege(Request $request)
-    {
-        $rules = array(
-            'college_name' => 'required',
-            'college_code' => 'required|max:10|min:3',
-            'college_contact' => 'required|max:13|min:7',
-            'college_email' => 'required|max:50|min:7',
-            'college_address' => 'required',
-        );
-        $validation = Validator::make($request->all(), $rules);
-        if ($validation->fails()) {
-            return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else{
-            $college = new College();
-            $college->name = $request->college_name;
-            $college->code = $request->college_code;
-            $college->contact_no = $request->college_contact;
-            $college->email = $request->college_email;
-            $college->address = $request->college_address;
-            $college->password = Hash::make('password');
-            $college->save();
-            session()->flash('message', 'College Add Successfully..!');
-            return redirect()->back();
-
-        }
-    }
-
-    public function addUniversity()
-    {
-        return view('add_university');
-    }
-
-    public function University(SchoolDataTable $dataTable)
-    {
-        $universities = University::all();
-        return $dataTable->render('university', ['universities' => $universities]);
-    }
-
-    public function SubmitUniversity(Request $request)
-    {
-        $rules = array(
-            'university_name' => 'required',
-            'university_code' => 'required|max:10|min:3',
-            'university_contact' => 'required|max:13|min:7',
-            'university_email' => 'required|max:50|min:7',
-            'university_address' => 'required',
-        );
-        $validation = Validator::make($request->all(), $rules);
-        if ($validation->fails()) {
-            return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else{
-            $university = new University();
-            $university->name = $request->university_name;
-            $university->code = $request->university_code;
-            $university->contact_no = $request->university_contact;
-            $university->email = $request->university_email;
-            $university->address = $request->university_address;
-            $university->password = Hash::make('password');
-            $university->save();
-            session()->flash('message', 'University Add Successfully..!');
-            return redirect()->back();
-
-        }
-    }
 }
