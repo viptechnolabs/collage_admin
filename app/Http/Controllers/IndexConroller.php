@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Validator;
 class IndexConroller extends Controller
 {
     //
+
+    public function index()
+    {
+        return view('index');
+    }
+
+
     public function addUniversity()
     {
         return view('add_university');
@@ -22,7 +29,7 @@ class IndexConroller extends Controller
 
     public function University()
     {
-        $universities = University::all();
+        $universities = University::with('user')->get();
         return view('university', ['universities' => $universities]);
     }
 
@@ -62,12 +69,14 @@ class IndexConroller extends Controller
 
     public function addCollege()
     {
-        return view('add_college');
+        $universities = University::all();
+        return view('add_college', ['universities' => $universities]);
     }
 
     public function College(SchoolDataTable $dataTable)
     {
-        $colleges = College::all();
+        $colleges = College::with('user')->get();
+        //dd($colleges[0]->user->email);
         return $dataTable->render('college', ['colleges' => $colleges]);
     }
 
@@ -94,6 +103,7 @@ class IndexConroller extends Controller
 
 
             $college = new College();
+            $college->user_id = $user->id;
             $college->name = $request->college_name;
             $college->code = $request->college_code;
             $college->contact_no = $request->college_contact;
@@ -106,10 +116,6 @@ class IndexConroller extends Controller
     }
 
 
-    public function index()
-    {
-        return view('index');
-    }
 
     public function addSchool()
     {
@@ -130,13 +136,20 @@ class IndexConroller extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         }
         else{
+
+            $user = new User();
+            $user->user_type  ="school";
+            $user->email = $request->school_email;
+            $user->password = Hash::make('password');
+            $user->save();
+
+
             $school = new School();
+            $school->user_id = $user->id;
             $school->name = $request->school_name;
             $school->code = $request->school_code;
             $school->contact_no = $request->school_contact;
-            $school->email = $request->school_email;
             $school->address = $request->school_address;
-            $school->password = Hash::make('password');
             $school->save();
             session()->flash('message', 'School Add Successfully..!');
             return redirect()->back();
@@ -146,7 +159,7 @@ class IndexConroller extends Controller
 
     public function School(SchoolDataTable $dataTable)
     {
-        $schools = School::all();
+        $schools = School::with('user')->get();
         return $dataTable->render('school', ['schools' => $schools]);
         //return view('school');
     }

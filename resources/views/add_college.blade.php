@@ -46,6 +46,14 @@
                                 <label for="exampleInputName1">College Code</label>
                                 <input type="text" class="form-control" name="college_code" id="college_code" placeholder="College Code">
                             </div>
+                                <div class="form-group">
+                                <label for="exampleInputName1">College Code</label>
+                                    <select class="form-control" name="uni">
+                                        @foreach($universities as $university)
+                                        <option value="{{ $university->id }}" >{{ $university->name }}</option>
+                                        @endforeach
+                                    </select>
+                            </div>
                             <div class="form-group">
                                 <label for="exampleInputName1">College Contact</label>
                                 <input type="text" class="form-control" name="college_contact" id="college_contact" placeholder="College Code">

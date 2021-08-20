@@ -16,15 +16,15 @@ class CreateCollegesTable extends Migration
         Schema::create('colleges', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->unsigned();
+            $table->unsignedBigInteger('uni_id')->unsigned();
             $table->string('name');
             $table->string('code');
             $table->string('contact_no');
-//            $table->string('email');
             $table->longText('address');
-//            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('uni_id')->references('id')->on('universities');
         });
     }
 

@@ -28,12 +28,12 @@
                             </thead>
                             <tbody>
                             @foreach($universities as $university)
-                            <tr>$
+                            <tr>
                                 <td> {{ $university->id }} </td>
                                 <td> {{ $university->name }} </td>
                                 <td> {{ $university->code }} </td>
                                 <td> {{ $university->contact_no }} </td>
-                                <td> {{ $university->email }} </td>
+                                <td> {{ $university->user->email }} </td>
                                 <td> {{ $university->address }} </td>
                             </tr>
                             @endforeach

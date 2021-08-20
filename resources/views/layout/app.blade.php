@@ -101,12 +101,12 @@
                     </a>
                     <div class="collapse" id="school_college_university">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="{{ route('school') }}">List of School</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_school') }}">Add School</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{ route('college') }}">List of College</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{route('add_college')}}">Add College</a></li>
                             <li class="nav-item"> <a class="nav-link" href="{{ route('university') }}">List of University</a></li>
                             <li class="nav-item"> <a class="nav-link" href="{{ route('add_university') }}">Add University</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('college') }}">List of College</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{route('add_college')}}">Add College</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('school') }}">List of School</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_school') }}">Add School</a></li>
                         </ul>
                     </div>
                 </li>

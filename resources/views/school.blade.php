@@ -33,7 +33,7 @@
                                 <td> {{ $school->name }} </td>
                                 <td> {{ $school->code }} </td>
                                 <td> {{ $school->contact_no }} </td>
-                                <td> {{ $school->email }} </td>
+                                <td> {{ $school->user->email }} </td>
                                 <td> {{ $school->address }} </td>
                             </tr>
                             @endforeach
