@@ -14,7 +14,7 @@
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submit_school') }}" method="POST" class="forms-sample">
+                        <form action="{{ route('submit_school') }}" method="POST" id="add_school" class="forms-sample">
                             @if ($errors->any())
                                 @foreach ($errors->all() as $message)
                                     <div class="alert alert-danger alert-dismissible "
