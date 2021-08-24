@@ -14,7 +14,8 @@
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submit_college') }}" method="POST" class="forms-sample">
+                        <form action="{{ route('submitCollage') }}" method="POST" id="add_college" class="forms-sample">
+                            @csrf
                             @if ($errors->any())
                                 @foreach ($errors->all() as $message)
                                     <div class="alert alert-danger alert-dismissible "
@@ -37,7 +38,6 @@
                                     <strong>{{ session('message') }}</strong>
                                 </div>
                             @endif
-                            @csrf
                             <div class="form-group">
                                 <label for="exampleInputName1">College Name</label>
                                 <input type="text" class="form-control" name="college_name" id="college_name" placeholder="College Name">
@@ -46,6 +46,17 @@
                                 <label for="exampleInputName1">College Code</label>
                                 <input type="text" class="form-control" name="college_code" id="college_code" placeholder="College Code">
                             </div>
+                            @if (Session::get('userType') === 'admin')
+                            <div class="form-group">
+                                <label for="exampleInputName1">University</label>
+                                    <select class="form-control" name="uni" id="uni">
+                                        <option value="">Choose..</option>
+                                        @foreach($universities as $university)
+                                        <option value="{{ $university->id }}" >{{ $university->name }}</option>
+                                        @endforeach
+                                    </select>
+                            </div>
+                            @endif
                             <div class="form-group">
                                 <label for="exampleInputName1">College Contact</label>
                                 <input type="text" class="form-control" name="college_contact" id="college_contact" placeholder="College Code">

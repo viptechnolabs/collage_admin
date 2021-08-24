@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{asset('images/favicon.ico')}}" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="container-scroller">
@@ -55,7 +57,7 @@
                         <a class="dropdown-item" href="#">
                             <i class="mdi mdi-cached mr-2 text-success"></i> Activity Log </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{ route('logout') }}">
                             <i class="mdi mdi-logout mr-2 text-primary"></i> Signout </a>
                     </div>
                 </li>
@@ -95,21 +97,24 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse" href="#school_college_university" aria-expanded="false" aria-controls="ui-basic">
-                        <span class="menu-title">School / College / University</span>
+                        <span class="menu-title">School / College {{ Session::get('userType') === 'admin' ? '/ University' : '' }} </span>
                         <i class="menu-arrow"></i>
 {{--                        <i class="mdi mdi-crosshairs-gps menu-icon"></i>--}}
                     </a>
                     <div class="collapse" id="school_college_university">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="{{ route('school') }}">List of School</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_school') }}">Add School</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{ route('college') }}">List of College</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{route('add_college')}}">Add College</a></li>
+                            @if (Session::get('userType') === 'admin')
                             <li class="nav-item"> <a class="nav-link" href="{{ route('university') }}">List of University</a></li>
                             <li class="nav-item"> <a class="nav-link" href="{{ route('add_university') }}">Add University</a></li>
+                            @endif
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('college') }}">List of College</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{route('add_college')}}">Add College</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('school') }}">List of School</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_school') }}">Add School</a></li>
                         </ul>
                     </div>
                 </li>
+                @if (Session::get('userType') === 'admin')
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse" href="#student" aria-expanded="false" aria-controls="general-pages">
                         <span class="menu-title">Student</span>
@@ -118,8 +123,8 @@
                     </a>
                     <div class="collapse" id="student">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">List of Student</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Add Student</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('student') }}">List of Student</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_student') }}">Add Student</a></li>
                         </ul>
                     </div>
                 </li>
@@ -135,6 +140,8 @@
                         </ul>
                     </div>
                 </li>
+                @endif
+                @if (Session::get('userType') === 'university')
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse" href="#student" aria-expanded="false" aria-controls="general-pages">
                         <span class="menu-title">Student</span>
@@ -143,7 +150,7 @@
                     </a>
                     <div class="collapse" id="student">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">Student Enrollment Form</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_student') }}">Add Student</a></li>
                             <li class="nav-item"> <a class="nav-link" href="#">Student List</a></li>
                         </ul>
                     </div>
@@ -156,17 +163,26 @@
                     </a>
                     <div class="collapse" id="certificate">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">Generate Certificate</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Certificate List</a></li>
+                            @if (Session::get('userType') === 'university')
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_certificate') }}">Generate Certificate</a></li>
+                            @endif
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('certificate') }}">Certificate List</a></li>
                         </ul>
                     </div>
                 </li>
+                @endif
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse"  aria-expanded="false" aria-controls="general-pages">
+                    <a class="nav-link" data-toggle="collapse" href="#profile" aria-expanded="false" aria-controls="general-pages">
                         <span class="menu-title">Profile</span>
-{{--                        <i class="menu-arrow"></i>--}}
+                        <i class="menu-arrow"></i>
                         {{--                        <i class="mdi mdi-medical-bag menu-icon"></i>--}}
                     </a>
+                    <div class="collapse" id="profile">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" href="#">Activity Log</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('logout') }}">Signout</a></li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="collapse"  aria-expanded="false" aria-controls="general-pages">
@@ -206,12 +222,17 @@
 <script src="{{asset('js/todolist.js')}}"></script>
 <!-- End custom js for this page -->
 
+<!--Validation-->
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+{{--<script src="{{ asset('js/validation_rules.js') }}"></script>--}}
+<script src="{{ asset('js/custom_validation_rules.js') }}"></script>
+<script src="{{ asset('js/validation.js') }}"></script>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>--}}
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>--}}
+{{--<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>--}}
+{{--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>--}}
+{{--<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>--}}
 </body>
 </html>
