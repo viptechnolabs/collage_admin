@@ -179,7 +179,7 @@
                     </a>
                     <div class="collapse" id="profile">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">Activity Log</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('activity') }}">Activity Log</a></li>
                             <li class="nav-item"> <a class="nav-link" href="{{ route('logout') }}">Signout</a></li>
                         </ul>
                     </div>

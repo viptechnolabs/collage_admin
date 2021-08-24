@@ -43,6 +43,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('submit_certificate', [\App\Http\Controllers\IndexConroller::class, 'submitCertificate'])->name('submit_certificate');
     Route::get('certificate', [\App\Http\Controllers\IndexConroller::class, 'Certificate'])->name('certificate');
 
+    Route::get('activity', [\App\Http\Controllers\IndexConroller::class, 'activity'])->name('activity');
+
 
 
 });

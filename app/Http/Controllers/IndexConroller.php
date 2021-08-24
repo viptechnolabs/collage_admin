@@ -9,12 +9,12 @@ use App\Models\School;
 use App\Models\Student;
 use App\Models\University;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Activitylog\Models\Activity;
 
 class IndexConroller extends Controller
 {
@@ -22,34 +22,36 @@ class IndexConroller extends Controller
 
     public function login()
     {
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             return redirect()->route('index');
         }
-        $users =  User::with('university')->where('user_type', 'admin')->orWhere('user_type', 'university')->get();
+        $users = User::with('university')->where('user_type', 'admin')->orWhere('user_type', 'university')->get();
         return view('login', ['users' => $users]);
     }
 
     public function doLogin(Request $request)
     {
         $user = User::findOrFail($request->user_id);
-        if($user->user_type === 'admin')
-        {
-            if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'user_type' => 'admin'], $request->filled('remember')))
-            {
+        if ($user->user_type === 'admin') {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'user_type' => 'admin'], $request->filled('remember'))) {
                 Session::put('userType', 'admin');
+                activity('Login')
+                    ->performedOn(Auth::user())
+                    ->causedBy(Auth::user())
+                    ->log(Auth::user()->name . ' Admin login');
                 return redirect()->route('index');
             }
             //Authentication failed...
             session()->flash('message', 'Login failed, please try again!');
             return redirect()
                 ->back();
-        }
-        elseif ($user->user_type === 'university')
-        {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'user_type' => 'university'], $request->filled('remember')))
-            {
+        } elseif ($user->user_type === 'university') {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'user_type' => 'university'], $request->filled('remember'))) {
                 Session::put('userType', 'university');
+                activity('Login')
+                    ->performedOn(Auth::user())
+                    ->causedBy(Auth::user())
+                    ->log(Auth::user()->name . 'University login');
                 return redirect()->route('index');
             }
             //Authentication failed...
@@ -65,11 +67,30 @@ class IndexConroller extends Controller
 
     public function logout()
     {
+        if (Session::get('userType') === 'admin') {
+            activity('Logout')
+                ->performedOn(Auth::user())
+                ->causedBy(Auth::user())
+                ->log(Auth::user()->name . 'Admin Logout');
+        } elseif (Session::get('userType') === 'university') {
+            activity('Logout')
+                ->performedOn(Auth::user())
+                ->causedBy(Auth::user())
+                ->log(Auth::user()->name . 'University Logout');
+        }
         Session::flush();
         Auth::logout();
         return redirect()
             ->route('login')
             ->with('status', 'Logout successfully...!');
+    }
+
+    public function activity()
+    {
+        $activities = Activity::orderBy('id', 'DESC')->get(); //returns the last logged activity
+        //dd($activities->causer);
+        return view('activity', ['activities' => $activities]);
+        dd($activities);
     }
 
     public function index()
@@ -101,22 +122,24 @@ class IndexConroller extends Controller
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else{
+        } else {
 
             $user = new User();
-            $user->user_type  ="university";
+            $user->user_type = "university";
             $user->email = $request->university_email;
             $user->password = Hash::make('password');
             $user->save();
 
             $university = new University();
-            $university->user_id  = $user->id;
+            $university->user_id = $user->id;
             $university->name = $request->university_name;
             $university->code = $request->university_code;
             $university->contact_no = $request->university_contact;
             $university->address = $request->university_address;
             $university->save();
+            activity('Add university')
+                ->performedOn($university)
+                ->log($request->university_name . ' university are added');
             session()->flash('message', 'University Add Successfully..!');
             return redirect()->route('university');
 
@@ -148,11 +171,10 @@ class IndexConroller extends Controller
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else{
+        } else {
 
             $user = new User();
-            $user->user_type  ="college";
+            $user->user_type = "college";
             $user->email = $request->college_email;
             $user->password = Hash::make('password');
             $user->save();
@@ -166,12 +188,16 @@ class IndexConroller extends Controller
             $college->contact_no = $request->college_contact;
             $college->address = $request->college_address;
             $college->save();
+
+            activity('Add college')
+                ->performedOn($college)
+                ->log($request->college_name . ' college are added');
+
             session()->flash('message', 'College Add Successfully..!');
             return redirect()->route('college');
 
         }
     }
-
 
 
     public function addSchool()
@@ -191,11 +217,10 @@ class IndexConroller extends Controller
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else{
+        } else {
 
             $user = new User();
-            $user->user_type  ="school";
+            $user->user_type = "school";
             $user->email = $request->school_email;
             $user->password = Hash::make('password');
             $user->save();
@@ -208,6 +233,11 @@ class IndexConroller extends Controller
             $school->contact_no = $request->school_contact;
             $school->address = $request->school_address;
             $school->save();
+
+            activity('Add school')
+                ->performedOn($school)
+                ->log($request->school_name . 'school are added');
+
             session()->flash('message', 'School Add Successfully..!');
             return redirect()->route('school');
 
@@ -223,12 +253,9 @@ class IndexConroller extends Controller
 
     public function addStudent()
     {
-        if (Session::get('userType') === 'admin')
-        {
+        if (Session::get('userType') === 'admin') {
             $colleges = College::all();
-        }
-        elseif (Session::get('userType') === 'university')
-        {
+        } elseif (Session::get('userType') === 'university') {
             $colleges = College::where('uni_id', Auth::user()->id)->get();
         }
         return view('add_student', ['colleges' => $colleges]);
@@ -249,14 +276,12 @@ class IndexConroller extends Controller
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else
-        {
+        } else {
             $student = new Student();
             $enrollment_no_find = Student::orderBy('enrollment_no', 'DESC')->first();
             $enrollment_no = substr($enrollment_no_find->enrollment_no ?? '2021/08/0001', -1) + 1;
-            $student->clg_id  = $request->student_clg;
-            $student->enrollment_no   = '2021/08/000'.$enrollment_no;
+            $student->clg_id = $request->student_clg;
+            $student->enrollment_no = '2021/08/000' . $enrollment_no;
             $student->name = $request->student_name;
             $student->stream = $request->student_stream;
             $student->dob = $request->student_dob;
@@ -265,6 +290,11 @@ class IndexConroller extends Controller
             $student->gender = $request->gender;
             $student->address = $request->student_address;
             $student->save();
+
+            activity('Add student')
+                ->performedOn($student)
+                ->log($request->student_name . 'student are added');
+
             session()->flash('message', 'Student Add Successfully..!');
             return redirect()->route('student');
         }
@@ -272,19 +302,14 @@ class IndexConroller extends Controller
 
     public function Student()
     {
-        if (Session::get('userType') === 'admin')
-        {
+        if (Session::get('userType') === 'admin') {
             $students = Student::with('college')->get();
-        }
-        elseif (Session::get('userType') === 'university')
-        {
-            $collages = College::where('uni_id',Auth::user()->id)->get('id');
+        } elseif (Session::get('userType') === 'university') {
+            $collages = College::where('uni_id', Auth::user()->id)->get('id');
             $students = [];
-            foreach ($collages as $collage)
-            {
-                $record = Student::where('clg_id',$collage->id)->get();
-                if ($record !== NULL)
-                {
+            foreach ($collages as $collage) {
+                $record = Student::where('clg_id', $collage->id)->get();
+                if ($record !== NULL) {
                     array_push($students, $record);
                 }
             }
@@ -295,13 +320,11 @@ class IndexConroller extends Controller
 
     public function addCertificate()
     {
-        $collages = College::where('uni_id',Auth::user()->id)->get('id');
+        $collages = College::where('uni_id', Auth::user()->id)->get('id');
         $students = [];
-        foreach ($collages as $collage)
-        {
-            $record = Student::where('clg_id',$collage->id)->get();
-            if ($record !== NULL)
-            {
+        foreach ($collages as $collage) {
+            $record = Student::where('clg_id', $collage->id)->get();
+            if ($record !== NULL) {
                 array_push($students, $record);
             }
         }
@@ -322,14 +345,12 @@ class IndexConroller extends Controller
         $validation = Validator::make($request->all(), $rules);
         if ($validation->fails()) {
             return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else
-        {
+        } else {
             $certificate = new Certificate();
             $certificate_no_find = Student::orderBy('certificate_no', 'DESC')->first();
-            $certificate_no = substr($certificate_no_find->certificate_no  ?? 'CR/'.$certificate_no_find->id.'/1', -1) + 1;
-            $certificate->student_id   = $request->student;
-            $certificate->certificate_no    = 'CR'.$certificate_no_find->id.'/08/'.$certificate_no;
+            $certificate_no = substr($certificate_no_find->certificate_no ?? 'CR/' . $certificate_no_find->id . '/1', -1) + 1;
+            $certificate->student_id = $request->student;
+            $certificate->certificate_no = 'CR' . $certificate_no_find->id . '/08/' . $certificate_no;
             $certificate->name = $request->certificate_name;
             $certificate->issue_dob = $request->issue_dob;
             $certificate->stream = $request->student_stream;
@@ -337,6 +358,11 @@ class IndexConroller extends Controller
             $certificate->passing_year = $request->passing_year;
             $certificate->grade = $request->grade;
             $certificate->save();
+
+            activity('Add certificate')
+                ->performedOn($certificate)
+                ->log($request->certificate_name . 'certificate are added');
+
             session()->flash('message', 'Certificate Add Successfully..!');
             return redirect()->route('student');
         }
@@ -348,8 +374,6 @@ class IndexConroller extends Controller
         dd($certificates);
         return view('certificate', ['certificates' => $certificates]);
     }
-
-
 
 
 }
