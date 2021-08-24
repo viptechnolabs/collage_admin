@@ -18,25 +18,44 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th> # </th>
-                                <th> Name </th>
-                                <th> Stream </th>
-                                <th> Collage Name </th>
-                                <th> Contact No </th>
-                                <th> Email </th>
+                                <th> #</th>
+                                <th> Name</th>
+                                <th> Enrollment No</th>
+                                <th> Stream</th>
+                                <th> Collage Name</th>
+                                <th> Contact No</th>
+                                <th> Email</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($students as $student)
-                            <tr>
-                                <td> {{ $student->id }} </td>
-                                <td> {{ $student->name }} </td>
-                                <td> {{ $student->stream }} </td>
-                                <td> {{ $student->college->name }} </td>
-                                <td> {{ $student->contact_no }} </td>
-                                <td> {{ $student->email }} </td>
-                            </tr>
-                            @endforeach
+                            @if(Session::get('userType') === 'admin')
+                                    @foreach($students as $student)
+                                        <tr>
+                                            <td> {{ $student->id }} </td>
+                                            <td> {{ $student->name }} </td>
+                                            <td> {{ $student->enrollment_no }} </td>
+                                            <td> {{ $student->stream }} </td>
+                                            <td> {{ $student->college->name }} </td>
+                                            <td> {{ $student->contact_no }} </td>
+                                            <td> {{ $student->email }} </td>
+                                        </tr>
+                                    @endforeach
+                            @endif
+                            @if(Session::get('userType') === 'university')
+                                @foreach($students as $collages)
+                                    @foreach($collages as $student)
+                                        <tr>
+                                            <td> {{ $student->id }} </td>
+                                            <td> {{ $student->name }} </td>
+                                            <td> {{ $student->enrollment_no }} </td>
+                                            <td> {{ $student->stream }} </td>
+                                            <td> {{ $student->college->name }} </td>
+                                            <td> {{ $student->contact_no }} </td>
+                                            <td> {{ $student->email }} </td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>

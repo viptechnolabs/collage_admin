@@ -35,10 +35,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('submit_school', [\App\Http\Controllers\IndexConroller::class, 'SubmitSchool'])->name('submit_school');
     Route::get('school', [\App\Http\Controllers\IndexConroller::class, 'School'])->name('school');
 
-
     Route::get('add_student', [\App\Http\Controllers\IndexConroller::class, 'addStudent'])->name('add_student');
     Route::post('submit_college', [\App\Http\Controllers\IndexConroller::class, 'SubmitStudent'])->name('submit_student');
     Route::get('student', [\App\Http\Controllers\IndexConroller::class, 'Student'])->name('student');
+
+    Route::get('add_certificate', [\App\Http\Controllers\IndexConroller::class, 'addCertificate'])->name('add_certificate');
+    Route::post('submit_certificate', [\App\Http\Controllers\IndexConroller::class, 'submitCertificate'])->name('submit_certificate');
+    Route::get('certificate', [\App\Http\Controllers\IndexConroller::class, 'Certificate'])->name('certificate');
 
 
 

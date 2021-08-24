@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\SchoolDataTable;
+use App\Models\Certificate;
 use App\Models\College;
 use App\Models\School;
 use App\Models\Student;
@@ -222,8 +223,14 @@ class IndexConroller extends Controller
 
     public function addStudent()
     {
-        $colleges = College::all();
-       // dd($colleges[0]->user);
+        if (Session::get('userType') === 'admin')
+        {
+            $colleges = College::all();
+        }
+        elseif (Session::get('userType') === 'university')
+        {
+            $colleges = College::where('uni_id', Auth::user()->id)->get();
+        }
         return view('add_student', ['colleges' => $colleges]);
     }
 
@@ -246,7 +253,10 @@ class IndexConroller extends Controller
         else
         {
             $student = new Student();
+            $enrollment_no_find = Student::orderBy('enrollment_no', 'DESC')->first();
+            $enrollment_no = substr($enrollment_no_find->enrollment_no ?? '2021/08/0001', -1) + 1;
             $student->clg_id  = $request->student_clg;
+            $student->enrollment_no   = '2021/08/000'.$enrollment_no;
             $student->name = $request->student_name;
             $student->stream = $request->student_stream;
             $student->dob = $request->student_dob;
@@ -262,8 +272,81 @@ class IndexConroller extends Controller
 
     public function Student()
     {
-        $students = Student::with('college')->get();
+        if (Session::get('userType') === 'admin')
+        {
+            $students = Student::with('college')->get();
+        }
+        elseif (Session::get('userType') === 'university')
+        {
+            $collages = College::where('uni_id',Auth::user()->id)->get('id');
+            $students = [];
+            foreach ($collages as $collage)
+            {
+                $record = Student::where('clg_id',$collage->id)->get();
+                if ($record !== NULL)
+                {
+                    array_push($students, $record);
+                }
+            }
+        }
+
         return view('student', ['students' => $students]);
+    }
+
+    public function addCertificate()
+    {
+        $collages = College::where('uni_id',Auth::user()->id)->get('id');
+        $students = [];
+        foreach ($collages as $collage)
+        {
+            $record = Student::where('clg_id',$collage->id)->get();
+            if ($record !== NULL)
+            {
+                array_push($students, $record);
+            }
+        }
+        return view('add_certificate', ['students' => $students]);
+    }
+
+    public function submitCertificate(Request $request)
+    {
+        $rules = array(
+            'student' => 'required',
+            'certificate_name' => 'required|max:50',
+            'issue_dob' => 'required',
+            'student_stream' => 'required',
+            'language' => 'required',
+            'passing_year' => 'required',
+            'grade' => 'required',
+        );
+        $validation = Validator::make($request->all(), $rules);
+        if ($validation->fails()) {
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else
+        {
+            $certificate = new Certificate();
+            $certificate_no_find = Student::orderBy('certificate_no', 'DESC')->first();
+            $certificate_no = substr($certificate_no_find->certificate_no  ?? 'CR/'.$certificate_no_find->id.'/1', -1) + 1;
+            $certificate->student_id   = $request->student;
+            $certificate->certificate_no    = 'CR'.$certificate_no_find->id.'/08/'.$certificate_no;
+            $certificate->name = $request->certificate_name;
+            $certificate->issue_dob = $request->issue_dob;
+            $certificate->stream = $request->student_stream;
+            $certificate->language = $request->language;
+            $certificate->passing_year = $request->passing_year;
+            $certificate->grade = $request->grade;
+            $certificate->save();
+            session()->flash('message', 'Certificate Add Successfully..!');
+            return redirect()->route('student');
+        }
+    }
+
+    public function Certificate()
+    {
+        $certificates = Certificate::all();
+        dd($certificates);
+        return view('certificate', ['certificates' => $certificates]);
     }
 
 

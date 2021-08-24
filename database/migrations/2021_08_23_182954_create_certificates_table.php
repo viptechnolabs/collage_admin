@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentsTable extends Migration
+class CreateCertificatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,19 @@ class CreateStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('certificates', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('student_id')->unsigned();
             $table->unsignedBigInteger('clg_id')->unsigned();
-            $table->string('enrollment_no', 22)->unique()->default('2021/08/0001');
+            $table->string('certificate_no', 22)->unique()->default('CR/1/0001');
             $table->string('name');
+            $table->date('issue_dob');
             $table->string('stream');
-            $table->date('dob');
-            $table->string('email');
-            $table->string('contact_no');
-            $table->enum('gender', ['male', 'female']);
-            $table->longText('address');
+            $table->enum('language', ['english', 'hindi']);
+            $table->string('passing_year');
+            $table->string('grade');
             $table->timestamps();
+            $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('clg_id')->references('id')->on('colleges');
         });
     }
@@ -36,6 +37,6 @@ class CreateStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('certificates');
     }
 }

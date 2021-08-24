@@ -301,4 +301,69 @@ validator = $('#add_student').validate({
     }
 });
 
+validator = $('#add_certificate').validate({
+    ignore: [],
+    errorElement: 'span',
+    errorClass: 'validation-error text-danger',
+    rules: {
+        student: {
+            required: true,
+            not_empty: true,
+        },
+        certificate_name: {
+            required: true,
+            maxlength: 50,
+            not_empty: true,
+        },
+        issue_dob: {
+            required: true,
+            not_empty: true,
+        },
+        student_stream: {
+            required: true,
+            not_empty: true,
+        },
+        language: {
+            required: true,
+            not_empty: true,
+        },
+        passing_year: {
+            required: true,
+            not_empty: true,
+        },
+        grade: {
+            required: true,
+            not_empty: true,
+        }
+    },
+    submitHandler: function (form) {
+        $(form).find(':input[type=submit]').prop('disabled', true)
+        form.submit();
+    },
+    messages: {
+        student: {
+            required: "Please select student name",
+        },
+        certificate_name: {
+            required: "Please enter certificate name",
+            maxlength: "Please enter maximum 50 characters.",
+        },
+        issue_dob: {
+            required: "Please enter issue date",
+        },
+        student_stream: {
+            required: "Please select student stream",
+        },
+        language: {
+            required: "Please select language",
+        },
+        passing_year: {
+            required: "Please enter passing year",
+        },
+        grade: {
+            required: "Please select grade",
+        },
+    }
+});
+
 

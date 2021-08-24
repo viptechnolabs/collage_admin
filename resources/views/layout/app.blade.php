@@ -150,7 +150,7 @@
                     </a>
                     <div class="collapse" id="student">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">Student Enrollment Form</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_student') }}">Add Student</a></li>
                             <li class="nav-item"> <a class="nav-link" href="#">Student List</a></li>
                         </ul>
                     </div>
@@ -163,8 +163,10 @@
                     </a>
                     <div class="collapse" id="certificate">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="#">Generate Certificate</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#">Certificate List</a></li>
+                            @if (Session::get('userType') === 'university')
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('add_certificate') }}">Generate Certificate</a></li>
+                            @endif
+                            <li class="nav-item"> <a class="nav-link" href="{{ route('certificate') }}">Certificate List</a></li>
                         </ul>
                     </div>
                 </li>

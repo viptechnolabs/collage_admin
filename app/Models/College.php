@@ -13,4 +13,9 @@ class College extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function university(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(University::class, 'uni_id', 'id');
+    }
 }
